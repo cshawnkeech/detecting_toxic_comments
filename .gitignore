@@ -1,5 +1,15 @@
+# My custom
+
 # data folder
 data/
+
+
+# .DS_Store file from osx
+.DS_Store
+
+
+
+# Default
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
