@@ -16,6 +16,20 @@ from multiprocessing import Pool
 # num_cores = 4
 
 def parallelize_dataframe(df, func, num_cores=2, num_partitions=100):
+    '''
+    arguments: 
+        df: a df or series, 
+        func: function to apply
+        num_cores: (default=2) how many cores to utilize
+        num_partitions: (default=100) how many subsets to create
+        
+    
+    Resource:  
+- [running pandas operations in parallel](http://www.racketracer.com/2016/07/06/pandas-in-parallel/)  
+    
+    '''
+    
+    
     df_split = np.array_split(df, num_partitions)
     pool = Pool(num_cores)
     df = pd.concat(pool.map(func, df_split))
