@@ -1,8 +1,10 @@
 # My custom
 
-# data folder
+# folders to ignore
 data/
 archive/
+logs/
+models/
 
 # .DS_Store file from osx
 .DS_Store
