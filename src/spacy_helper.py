@@ -74,21 +74,25 @@ def evaluate(tokenizer, textcat, val_texts, val_cats, thresh=0.5):
     return evals_by_cat
 
 
-
-def add_labels_helper(s):
+def add_labels_helper(s, verbose=False):
     '''
     takes dataframe or series, 
-    unpacks col labels and adds each as label to textcat
+    adds each column name as label to textcat
         formatted as uppercase
+    Returns: None
     '''
     
     for col in s.columns:
-        print(col)
-        textcat.add_label(col.upper())
+        if verbose:
+            print(f'Added {col.upper()} to textcat.')
         
+        textcat.add_label(col.upper())
+    
+    return None
         
 def txt_and_multi_cat(txt_series, multi_cat_df):
     '''
+    formats txt and categories to train spaCy textcat
     arguments: 
         txt_series: a pandas series with text to be categorized
         multi_cat_df: a series or df with categories and the results (typically one-hot, but booleans would likely work as well)
@@ -99,8 +103,7 @@ def txt_and_multi_cat(txt_series, multi_cat_df):
         
     # convert each series or series slice to list
     t = txt_series.tolist()
-
-    
+ 
     # get a category name for each dependent column
     cats = [multi_cat_df[cat].name.upper() for cat in multi_cat_df.columns]
 
@@ -113,3 +116,31 @@ def txt_and_multi_cat(txt_series, multi_cat_df):
     docs = list(zip(t, c))
     
     return docs
+
+def doc_check(tok):
+    '''
+    helper function for getting only desired lemmas from spaCy doc
+    argument: doc.token
+    
+    checks for rejection conditions
+        not alpha
+        pronoun
+        stopword
+        
+    returns True if no rejection conditions are met
+    
+    ''' 
+    # reject if not alpha
+    if tok.is_alpha == False:
+        return False
+    
+    # reject if pronoun
+    if tok.lemma_ == "-PRON-":
+        return False
+    
+    # reject if stopword
+    if tok.is_stop == True:
+        return False
+
+    # if not rejected, return true
+    return True

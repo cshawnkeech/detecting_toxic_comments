@@ -23,13 +23,10 @@ def parallelize_dataframe(df, func, num_cores=2, num_partitions=100):
         num_cores: (default=2) how many cores to utilize
         num_partitions: (default=100) how many subsets to create
         
-    
     Resource:  
 - [running pandas operations in parallel](http://www.racketracer.com/2016/07/06/pandas-in-parallel/)  
     
     '''
-    
-    
     df_split = np.array_split(df, num_partitions)
     pool = Pool(num_cores)
     df = pd.concat(pool.map(func, df_split))
@@ -63,11 +60,7 @@ def uppercase_proportion_column(s):
     return uc_proportion
 
 
-
-
-
 # Convert all interior quotes to single quotes
-
 def convert_interior_quotes(s):
     '''
     Arguments:
@@ -113,8 +106,9 @@ def strip_whitespace(s):
     Returns: 
         Series of strings without extraneous whitespace
     '''
-    
+    # create copy
     t = s.copy()
+    
     # remove whitespace from edge
     t = t.str.strip()
 
@@ -135,6 +129,7 @@ def remove_all_punct(s):
     '''
     not_alpha_pattern = '[^A-Za-z\s]'
     return s.str.replace(not_alpha_pattern, "")
+
 
 def tidy_series(s):
     '''
