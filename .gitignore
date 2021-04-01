@@ -5,6 +5,7 @@ data/
 archive/
 logs/
 models/
+tokens/
 
 # .DS_Store file from osx
 .DS_Store
